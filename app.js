@@ -1,4 +1,4 @@
-const db = require('./taskdb.js');
+const db = require('../../Desktop/taskdb.js');
 
 exports.createTask = function (newTask, response) {
 	let name = newTask.name;
@@ -9,11 +9,11 @@ exports.createTask = function (newTask, response) {
 	db.query(`INSERT INTO Tasks (name, description, time, completed) VALUES ("${name}", "${description}", "${time}", ${completed})`, function(err, res) {
 		if(err) {
 			console.log("error: ", err);
-			response(err, null);
+			return response(err);
 		}
 
 		else {
-			response(null, res);
+			return response(res);
 		}
 	});
 };
@@ -27,12 +27,12 @@ exports.updateTask = function (updatedTask, response) {
 
 	db.query(`UPDATE Tasks SET name = "${name}", description = "${description}, time = "${time}, completed = ${completed} WHERE id = ${id}`, function(err, res) {
 		if(err) {
-			console.log("error ", err);
-			response(err, null);
+			console.log("error: ", err);
+			return respons(err);
 		}
 
 		else {
-			response(null, res);
+			return response(res);
 		}
 	});
 };
@@ -40,28 +40,30 @@ exports.updateTask = function (updatedTask, response) {
 exports.deleteTask = function (id, response) {
 	db.query(`DELETE FROM Tasks WHERE id = ${id}`, function(err, res) {
 		if(err) {
-			console.log("error ", err);
-			response(err, null);
+			console.log("error: ", err);
+			return response(err);
 		}
 
 		else {
-			response(null, res);
+			return response(res);
 		}
 	})
 };
 
 
-exports.getAllTasks = function (id, response) {
+exports.getAllTasks = function (response) {
 	db.query(`SELECT * FROM Tasks`, function(err, res) {
 		if(err) {
-			console.log("error ", err);
-			response(err, null);
+			console.log("error: ", err);
+			return response(err);
 		}
 
 		else {
-			response(null, res);
+			return response(res);
 		}
-	})
+	});
+
+	
 };
 
 
