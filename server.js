@@ -1,10 +1,13 @@
 const router = require('./routes.js');
+const notify = require('./notificationService.js');
 const http = require('http');
 const fs = require('fs');
 const io = require('socket.io')(http);
 
+
 let clientList = [];
 let count;
+
 
 fs.access('log.txt', fs.F_OK, (err) => {
 	if (err) {
@@ -33,6 +36,9 @@ io.on('connection', function (client) {
 			}
 		);
 		client.emit('subscribed', count);
+		setInterval(function(client) {
+			notify.notifyClient(client);
+		}, 3000);
 		count++;
 	}
 
@@ -46,13 +52,7 @@ io.on('connection', function (client) {
 			}
 		)
 	}
-	client.on('getTasks', function(clientID) {
-		
-	});
-	
 });
-
-
 
 router.listen(8090);
 
