@@ -7,7 +7,7 @@ exports.notifyClient = function(client) {
 	taskManager.getAllTasks(function(results) {
 		results.forEach(function(task) {
 			time = new Date(task.time).getTime();
-			if(Math.abs(time - now) <= 6015) client.emit('taskNotif', task);
+			if(Math.abs(time - now) <= 60015) client.emit('taskNotif', task);
 		});
 	});
 }
