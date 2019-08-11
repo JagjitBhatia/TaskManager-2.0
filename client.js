@@ -11,6 +11,10 @@ client.on("subscribed", function(data) {
 	client.emit('getTasks', myID);
 });
 
+client.on("taskNotif", function(data) {
+	console.log(data);
+});
+
 
 
 

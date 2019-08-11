@@ -6,6 +6,7 @@ const io = require('socket.io')(http);
 
 
 let clientList = [];
+let notified = [];
 let count;
 
 
@@ -36,8 +37,8 @@ io.on('connection', function (client) {
 			}
 		);
 		client.emit('subscribed', count);
-		setInterval(function(client) {
-			notify.notifyClient(client);
+		setInterval(() => {
+			notify.notifyClient(client, notified);
 		}, 3000);
 		count++;
 	}
