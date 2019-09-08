@@ -1,5 +1,9 @@
+//UI Component for Task object
+
 import React from 'react';
 import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
 
 const getMonth = (month) => {
 	switch(month) {
@@ -63,18 +67,25 @@ const task = (props) => {
 	return (
 		<div>
 			<Card style = {{margin:'2rem', borderRadius: '10px', textAlign: "center"}}> 
-			<Card.Header style = {{textAlign: "left"}}>Task ID: {props.id}</Card.Header>
-			<Card.Body>
-				<Card.Title as="h4"><b>{props.name}</b></Card.Title>
-				<Card.Text as="p">
+				<Card.Header style = {{textAlign: "left"}}>
+					Task ID: {props.id}
+					<ButtonToolbar style = {{float: "right"}}>
+						<Button variant = "danger" className = "fas fa-trash-alt" style = {{margin: '0.25rem'}}/>
+						<Button variant = "primary" className = "fas fa-edit" style = {{margin: '0.25rem'}}/>
+						<Button variant = "success" className= "fas fa-check-square" style = {{margin: '0.25rem'}}/>
+					</ButtonToolbar>
+				</Card.Header>
+				<Card.Body>
+					<Card.Title as="h4"><b>{props.name}</b></Card.Title>
+					<Card.Text as="p">
 						{props.description}
-				</Card.Text>
+					</Card.Text>
 
-				<Card.Text as="h6">
+					<Card.Text as="h6">
 						<b>Scheduled for </b>{get12Hour(date.getHours())}:{date.getMinutes()} {getTimeSuffix(date.getHours())} <b>on</b> {getMonth(date.getMonth())} {date.getDay().toString() + getDaySuffix(date.getDay())}, {date.getFullYear()} 
-				</Card.Text>
-			</Card.Body>
-		</Card>
+					</Card.Text>
+				</Card.Body>
+			</Card>
 		</div>
 		
 	);

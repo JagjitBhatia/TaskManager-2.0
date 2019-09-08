@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Container from 'react-bootstrap/Container';
-import {Row, Col} from 'react-bootstrap'
+import {Row, Col, Navbar} from 'react-bootstrap'
 import './App.css';
 import Task from './Task/Task'
 import axios from 'axios';
@@ -25,9 +25,12 @@ class App extends Component {
 
   render() {
     const base = (
-      <div>
-        <h1>Task Manager</h1>
-      </div>
+      <Container style = {{marginBottom: '4rem'}}>
+         <Navbar bg = "light" className = "justify-content-md-center" fixed="top" style = {{textAlign: 'center'}}>
+          <Navbar.Brand href="#" style = {{textAlign: 'center'}}><h1>Task Manager</h1></Navbar.Brand>
+        </Navbar>
+      </Container>
+      
     );
 
   
