@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Container from 'react-bootstrap/Container';
+import {Row, Col} from 'react-bootstrap'
 import './App.css';
 import Task from './Task/Task'
 import axios from 'axios';
@@ -25,21 +27,43 @@ class App extends Component {
     const base = (
       <div>
         <h1>Task Manager</h1>
-        <h3>Welcome to the Ultimate Task Manager!</h3>
       </div>
     );
+
+  
 
     if(this.state.tasks.length !== 0) {
       let taskList = [];
 
       this.state.tasks.forEach((task) => {
-        taskList.push(<Task name = {task.name} description = {task.description} time = {task.time}/>)
+        taskList.push(
+          <Row>
+              <Col xs={3} md={2}>
+          
+          </Col>
+
+        <Col xs={12} md={8}>
+            <Task name = {task.name} description = {task.description} time = {task.time} id = {task.id}/>
+        </Col>
+        <Col xs={3} md={2}>
+    
+        </Col>
+          </Row>
+           
+          
+        );
       });
 
       return (
       <div className="App">
+        <Container>
         {base}
+        <div className="text-center">
         {taskList}
+        </div>
+        
+        </Container>
+       
         </div>
       );
     }

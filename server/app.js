@@ -1,4 +1,4 @@
-const db = require('../../Desktop/taskdb.js');
+const db = require('../../../Desktop/taskdb.js');
 
 exports.createTask = function (newTask, response) {
 	let name = newTask.name;
