@@ -1,4 +1,4 @@
-# GoTo React App
+# GoTo React App   -- Created by Alex Chomiak (GitHub: alexchomiak)
 
 GoTo React app is a simple lightweight boilerplate React application that comes bundled with React, Redux and ReactRouter. It is an ongoing project, please leave any ideas for improvement below.
 
