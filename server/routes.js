@@ -16,13 +16,13 @@ app.post('/createTask', function (req, res) {
 });
 
 app.put('/updateTask', function (req, res) {
-	taskManager.updateTask(req.params, function(results) {
+	taskManager.updateTask(req.body.params, function(results) {
 		res.send(results);
 	});
 });
 
 app.delete('/deleteTask', function (req, res) {
-	taskManager.deleteTask(req.params, function(results) {
+	taskManager.deleteTask(req.body.id, function(results) {
 		res.send(results);
 	});
 });
