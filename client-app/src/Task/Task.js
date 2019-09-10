@@ -4,6 +4,7 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
+import axios from 'axios';
 
 const getMonth = (month) => {
 	switch(month) {
@@ -62,15 +63,28 @@ const getTimeSuffix = (hour) => {
 	else return "PM";
 }
 
+const deleteTask = (taskID, removeFromList) => {
+	axios.delete('http://localhost:8090/deleteTask', {
+		data: {
+			id: taskID
+		}
+	}).then(response => {
+		console.log(response);
+		removeFromList(taskID);
+	}).catch(error => {
+		console.log(error);
+	})
+}
+
 const task = (props) => {
 	let date = new Date(props.time);
 	return (
 		<div>
 			<Card style = {{margin:'2rem', borderRadius: '10px', textAlign: "center"}}> 
-				<Card.Header style = {{textAlign: "left"}}>
+				<Card.Header style = {{textAlign: "left"}}>	
 					Task ID: {props.id}
 					<ButtonToolbar style = {{float: "right"}}>
-						<Button variant = "danger" className = "fas fa-trash-alt" style = {{margin: '0.25rem'}}/>
+						<Button variant = "danger" className = "fas fa-trash-alt" style = {{margin: '0.25rem'}} onClick = {() => deleteTask(props.id, props.removeFromList)}/>
 						<Button variant = "primary" className = "fas fa-edit" style = {{margin: '0.25rem'}}/>
 						<Button variant = "success" className= "fas fa-check-square" style = {{margin: '0.25rem'}}/>
 					</ButtonToolbar>

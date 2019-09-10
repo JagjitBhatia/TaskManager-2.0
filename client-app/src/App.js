@@ -6,21 +6,29 @@ import Task from './Task/Task'
 import axios from 'axios';
 
 class App extends Component {
+
   state = {
     tasks: []
   }
 
+  removeFromList(taskToDelete) {
+    let taskList = this.state.tasks;
+    taskList = taskList.filter(task => task.id !== taskToDelete);
+    this.setState({
+      tasks: taskList
+    });
+  }
 
   componentDidMount() {
     axios.get('http://localhost:8090/getAllTasks').then(response => {
       this.setState({
         tasks: response.data
       });
-      console.log("Fetched: " + JSON.stringify(response.data));
     }).catch(error => {
         console.log(error);
     });
-    
+
+    this.removeFromList = this.removeFromList.bind(this);
   }
 
   render() {
@@ -46,7 +54,7 @@ class App extends Component {
           </Col>
 
         <Col xs={12} md={8}>
-            <Task name = {task.name} description = {task.description} time = {task.time} id = {task.id}/>
+            <Task name = {task.name} description = {task.description} time = {task.time} id = {task.id} removeFromList = {this.removeFromList}/>
         </Col>
         <Col xs={3} md={2}>
     
