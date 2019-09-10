@@ -21,6 +21,7 @@ app.put('/updateTask', function (req, res) {
 	});
 });
 
+// UPDATE 9/9/19: Fixed /deleteTask API error 
 app.delete('/deleteTask', function (req, res) {
 	taskManager.deleteTask(req.body.id, function(results) {
 		res.send(results);

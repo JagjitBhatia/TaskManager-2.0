@@ -38,10 +38,10 @@ exports.updateTask = function (updatedTask, response) {
 	});
 };
 
+
 exports.deleteTask = function (id, response) {
 	db.query(`DELETE FROM Tasks WHERE id = ${id}`, function(err, res) {
 		if(err) {
-			
 			console.log("error: ", err);
 			return response(err);
 		}
