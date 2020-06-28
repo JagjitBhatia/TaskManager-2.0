@@ -1,5 +1,12 @@
 // Local taskdb.js file
-const db = require('./taskdb.js');
+const taskdb = require('./taskdb.js');
+
+let db;
+
+exports.init = (sql_params) => {
+	db = taskdb.connect(sql_params);
+	console.log(db);
+};
 
 exports.createTask = function (newTask, response) {
 	let name = newTask.name;
@@ -66,6 +73,19 @@ exports.getAllTasks = function (response) {
 	});
 
 	
+};
+
+exports.getTasksforUser = function(id, response) {
+	db.query(`SELECT * FROM Tasks JOIN Users ON Tasks.user_id = Users.id WHERE Users.id AND Users.id = ${id}`, function(err, res) {
+		if(err) {
+			console.log("error: ", err);
+			return response(err);
+		}
+
+		else {
+			return response(res);
+		}
+	})
 };
 
 

@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 
 const app = express();
 
+
 app.use(cors());
 
 app.use(bodyParser.json());
@@ -34,4 +35,16 @@ app.get('/getAllTasks', function (req, res) {
 	});
 });
 
-module.exports = app;
+exports.taskManager = taskManager;
+
+module.exports = (cli_args) => {
+	const sql_params = {
+		host: cli_args.host,
+		user: cli_args.user,
+		password: cli_args.password,
+		port: cli_args.port
+	};
+
+	taskManager.init(sql_params);
+	return app;
+}
