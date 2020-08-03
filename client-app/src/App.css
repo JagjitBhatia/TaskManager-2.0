@@ -2,4 +2,31 @@
   text-align: center;
 }
 
+.btn-lg {
+  width: 20%;
+  border-radius: 15px;
+  font-size: 25px;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  margin: auto;
+  line-height: 50px;
+}
+
+.span {
+  margin-top: 200px;
+}
+
+input {
+  height: 40px;
+  flex: 0 0 200px;
+  margin-left: 10px;
+  border-radius: 5px;
+}
+
+label {
+  margin-left: 15px;
+  font-size: 18px;
+}
+
 

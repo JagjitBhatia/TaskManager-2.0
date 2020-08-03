@@ -5,10 +5,28 @@ const bodyParser = require('body-parser')
 
 const app = express();
 
+const corsOpts = {
+	origin: '*',
+  
+	methods: [
+	  'GET',
+	  'POST',
+	  'DELETE',
+	  'PUT'
+	],
+  
+	allowedHeaders: [
+	  'Content-Type',
+	  'Accept'
+	],
+  };
+  
+app.use(cors({origin: true}));
 
-app.use(cors());
 
 app.use(bodyParser.json());
+
+// REST API Routes for Tasks 
 
 app.post('/createTask', function (req, res) {
 	taskManager.createTask(req.body.params, function(results) {
@@ -22,7 +40,6 @@ app.put('/updateTask', function (req, res) {
 	});
 });
 
-// UPDATE 9/9/19: Fixed /deleteTask API error 
 app.delete('/deleteTask', function (req, res) {
 	taskManager.deleteTask(req.body.id, function(results) {
 		res.send(results);
@@ -32,6 +49,18 @@ app.delete('/deleteTask', function (req, res) {
 app.get('/getAllTasks', function (req, res) {
 	taskManager.getAllTasks(function(results) {
 		res.send(results);
+	});
+});
+
+
+// TODO: Create REST API routes for Users 
+
+app.post('/createUser', function (req, res) {
+	console.log(req);
+	console.log('request received: ', req.body);
+	taskManager.createUser(req.body.params, function(results) {
+		console.log("READY TO SEND: ", results);
+		res.status(200).send(results);
 	});
 });
 

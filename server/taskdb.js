@@ -11,7 +11,7 @@ exports.connect = (params) => {
 		user: params.user,
 		password: params.password,
 		port: mysql_port,
-		database: "TaskManagerDB"
+		database: 'TaskManagerDB'
 	});
 
 	con.connect(function(err) {

@@ -22,4 +22,4 @@ exports.notifyClient = function(taskManager, client, notified) {
 
 		client.emit('taskNotif', to_notify);
 	});
-}
+};
