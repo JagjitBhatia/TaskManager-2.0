@@ -46,7 +46,7 @@ class SignUp extends Component {
                 </div>
                 <div className="form-group">
                     <label>Password</label>
-                    <input type="text" value = {this.state.password} onChange = {this.handlePassword} placeholder="Enter Password"/>
+                    <input type="text" type ="password" value = {this.state.password} onChange = {this.handlePassword} placeholder="Enter Password"/>
                 </div>
                 <button type="submit" className="btn btn-primary">Submit</button>
             </form>
