@@ -1,5 +1,89 @@
-// Local taskdb.js file
-const db = require('./taskdb.js');
+const taskdb = require('./taskdb.js');
+
+let db;
+
+function getUserByName(username, response) {
+	db.query(`SELECT * FROM Users WHERE username = '${username}'`, function (err, res) {
+		if(err) {
+			console.log(err);
+		}
+
+		console.log("Returning response: ", res);
+		return response(res);
+	});
+}
+
+
+exports.init = (sql_params) => {
+	db = taskdb.connect(sql_params);
+};
+
+exports.createUser = function (newUser, response) {
+	let username = newUser.username;
+	let password = newUser.password;
+	let createdUser;
+	db.query(`INSERT INTO Users (username, password) VALUES ("${username}", "${password}")`, function(err, res) {
+		if(err) {
+			console.log("error: ", err);
+			return response(err);
+		}
+
+		else {
+			getUserByName(username, function(result) {
+				createdUser = result[0];
+				data = {
+					id: createdUser.id,
+					username: createdUser.username
+				}
+				console.log("Sending response to user: ", data);
+				return response(data);
+			});
+		}
+	});
+};
+
+exports.updateUser = function (updatedUser, response) {
+	let username = updaatedUser.username;
+	let password = updatedUser.password;
+
+	db.query(`UPDATE Users SET name = "${username}", password = "${password}"`, function(err, res) {
+		if(err) {
+			console.log("err: ", err);
+			return response(err);
+		}
+
+		else {
+			return response(res);
+		}
+	});
+};
+
+exports.deleteUser = function (id, response) {
+	db.query(`DELETE FROM Users WHERE id = ${id}`, function(err, res) {
+		if(err) {
+			console.log("error: ", err);
+			return response(err);
+		}
+
+		else {
+			return response(res);
+		}
+	});
+}
+
+exports.getUser = function (userID, response) {
+	db.query(`SELECT * FROM Users WHERE id = ${userID}`, function(err, res) {
+		if(err) {
+			console.log("error: ", err);
+			return response(err);
+		}
+
+		else {
+			return response(res);
+		}
+	});
+}
+
 
 exports.createTask = function (newTask, response) {
 	let name = newTask.name;
@@ -7,7 +91,7 @@ exports.createTask = function (newTask, response) {
 	let time = newTask.time;
 	let completed = 0;
 	
-	db.query(`INSERT INTO Tasks (name, description, time, completed) VALUES ("${name}", "${description}", "${time}", ${completed})`, function(err, res) {
+	db.query(`INSERT INTO Tasks (user_id, name, description, time) VALUES (1, "${name}", "${description}", "${time}")`, function(err, res) {
 		if(err) {
 			console.log("error: ", err);
 			return response(err);
@@ -49,7 +133,7 @@ exports.deleteTask = function (id, response) {
 		else {
 			return response(res);
 		}
-	})
+	});
 };
 
 
@@ -67,6 +151,21 @@ exports.getAllTasks = function (response) {
 
 	
 };
+
+exports.getTasksforUser = function(id, response) {
+	db.query(`SELECT * FROM Tasks JOIN Users ON Tasks.user_id = Users.id WHERE Users.id AND Users.id = ${id}`, function(err, res) {
+		if(err) {
+			console.log("error: ", err);
+			return response(err);
+		}
+
+		else {
+			return response(res);
+		}
+	})
+};
+
+
 
 
 

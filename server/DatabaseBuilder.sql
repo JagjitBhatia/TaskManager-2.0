@@ -1,11 +1,17 @@
-CREATE DATABASE `TaskManagerDB` /*!40100 DEFAULT CHARACTER SET latin1 */;
+CREATE DATABASE TaskManagerDB;
 USE TaskManagerDB;
-CREATE TABLE `Tasks` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `description` varchar(500) DEFAULT NULL,
-  `time` datetime DEFAULT NULL,
-  `completed` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+CREATE TABLE Users (
+  id INT NOT NULL AUTO_INCREMENT,
+  username VARCHAR(50) NOT NULL,
+  password VARCHAR(50) NOT NULL,
+  PRIMARY KEY (id)
+);
+CREATE TABLE Tasks (
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL,
+  description VARCHAR(500) DEFAULT NULL,
+  time DATETIME DEFAULT NULL,
+  user_id INT NOT NULL,
+  FOREIGN KEY(user_id) REFERENCES Users(id),
+  PRIMARY KEY (id)
+);

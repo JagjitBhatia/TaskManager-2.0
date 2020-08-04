@@ -1,15 +1,22 @@
 const mysql = require('mysql');
 
-const con = mysql.createConnection({
-	host: "hostname",
-	user: "username",
-	password: "password",
-	port: 3306,
-	database: "TaskManagerDB"
-});
+exports.connect = (params) => {
+	let mysql_port;
 
-con.connect(function(err) {
-	if(err) throw err;
-})
+	if(!params.port) mysql_port = 3306;
+	else mysql_port = params.port;
 
-module.exports = con;
+	const con = mysql.createConnection({
+		host: params.host,
+		user: params.user,
+		password: params.password,
+		port: mysql_port,
+		database: 'TaskManagerDB'
+	});
+
+	con.connect(function(err) {
+		if(err) throw err;
+	});
+
+	return con;
+};
