@@ -4,9 +4,13 @@ import {Row, Col, Navbar, Button, Form} from 'react-bootstrap'
 import '../App.css';
 import Task from '../Task/Task';
 import axios from 'axios';
+import Example from './Example';
+import {NotificationManager} from 'react-notifications';
+import TaskList from './TaskList';
+import {Redirect, BrowserRouter as Link } from 'react-router-dom';
 
 class SignUp extends Component {
-    state = {username: "", password: ""};
+    state = {username: "", password: "", id: -1, redirect: false};
 
     constructor(props) {
         super(props);
@@ -14,6 +18,8 @@ class SignUp extends Component {
         this.handlePassword = this.handlePassword.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
+   
 
     handleUsername(event) {
         this.setState({username: event.target.value});
@@ -30,29 +36,47 @@ class SignUp extends Component {
            }
         }).then(response => {
             console.log("RESPONSE: ", response);
+            NotificationManager.success('Your account has been created', 'Sign Up Successful!');
+            this.setState({redirect: true, id: response.data.id});
         }).catch(error => {
-            console.log(error);
+            if(error == 'Error: Network Error') {
+                // Render error notification for 'Server Not Connected'
+            }
         });
         event.preventDefault();
     }
 
     render() {
+        const redirect = this.state.redirect;
+        const user_id = this.state.id;
+
+        if(!redirect) {
+            return (
+                <div className="App">
+                     <form onSubmit ={this.handleSubmit} >
+                    <div className="form-group">
+                        <label>Username</label>
+                            <input type="text" value = {this.state.username} onChange = {this.handleUsername} placeholder="Enter Username"/>
+                    </div>
+                    <div className="form-group">
+                        <label>Password</label>
+                        <input type="text" type ="password" value = {this.state.password} onChange = {this.handlePassword} placeholder="Enter Password"/>
+                    </div>
+                    <button type="submit" className="btn btn-primary">Submit</button>
+                </form>
+                </div>
+               
+            );
+        }
+
         return (
-            <div className="App">
-                 <form onSubmit ={this.handleSubmit} >
-                <div className="form-group">
-                    <label>Username</label>
-                        <input type="text" value = {this.state.username} onChange = {this.handleUsername} placeholder="Enter Username"/>
-                </div>
-                <div className="form-group">
-                    <label>Password</label>
-                    <input type="text" type ="password" value = {this.state.password} onChange = {this.handlePassword} placeholder="Enter Password"/>
-                </div>
-                <button type="submit" className="btn btn-primary">Submit</button>
-            </form>
-            </div>
-           
-        );
+            <Redirect to={{
+                pathname: '/tasks',
+                state: { id: user_id}
+            }}
+    />
+        )
+       
     }
 }
 

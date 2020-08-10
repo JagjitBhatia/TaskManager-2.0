@@ -5,12 +5,22 @@ import '../App.css';
 import Task from '../Task/Task';
 import axios from 'axios';
 
+
 class TaskList extends Component {
     state = {
         tasks: []
       }
-    
-    
+
+
+      setUser(id) {
+        console.log("I was called");
+        id = 1;
+        axios.get(`http://localhost:8090/getTasksForUser?id=${id}`).then(response => {
+          this.setState({
+            tasks: response.data
+          });
+        });
+      }
     
       removeFromList(taskToDelete) {
         let taskList = this.state.tasks;
@@ -21,15 +31,19 @@ class TaskList extends Component {
       }
     
       componentDidMount() {
-        axios.get('http://localhost:8090/getAllTasks').then(response => {
-          console.log("RESPONSE: ", response.data);
-          this.setState({
-            tasks: response.data
-          });
-        }).catch(error => {
-            console.log(error);
-        });
-    
+        const id = this.props.location.state.id;
+        console.log("ID: ", id);
+        if(id) {
+          axios.get(`http://localhost:8090/getTasksForUser?id=${id}`).then(response => {
+            console.log("RESPONSE: ", response.data);
+            this.setState({
+              tasks: response.data
+            });
+          }).catch(error => {
+              console.log(error);
+          });  
+        }
+      
         this.removeFromList = this.removeFromList.bind(this);
       }
 
@@ -37,7 +51,7 @@ class TaskList extends Component {
         const base = (
             <Container style = {{marginBottom: '4rem'}}>
                <Navbar bg = "light" className = "justify-content-md-center" fixed="top" style = {{textAlign: 'center'}}>
-                <Navbar.Brand href="#" style = {{textAlign: 'center'}}><h1>Task Manager</h1></Navbar.Brand>
+                <Navbar.Brand href="/" style = {{textAlign: 'center'}}><h1>Task Manager</h1></Navbar.Brand>
               </Navbar>
             </Container>
             

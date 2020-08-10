@@ -64,6 +64,13 @@ app.post('/createUser', function (req, res) {
 	});
 });
 
+app.get('/getTasksForUser', function (req, res) {
+	console.log(req);
+	taskManager.getTasksforUser(req.query.id, function(results) {
+		res.status(200).send(results);
+	});
+});
+
 exports.taskManager = taskManager;
 
 module.exports = (cli_args) => {
