@@ -3,6 +3,7 @@ import TaskList from './Components/TaskList';
 import SignUp from './Components/SignUp';
 import Default from './Components/Default';
 import Example from './Components/Example';
+import Login from './Components/Login';
 import Container from 'react-bootstrap/Container';
 import {Row, Col, Navbar, Button} from 'react-bootstrap'
 import './App.css';
@@ -18,6 +19,7 @@ class App extends Component {
       <Router>
            
         <div>
+        <NotificationContainer/>
             <Container style = {{marginBottom: '10rem'}}>
                <Navbar bg = "light" className = "justify-content-md-center" fixed="top" style = {{textAlign: 'center'}}>
                 <Navbar.Brand href="/" style = {{textAlign: 'center'}}><h1>Task Manager</h1></Navbar.Brand>
@@ -27,8 +29,7 @@ class App extends Component {
             <Switch>
             <Route exact path ="/" component = {Default}/>
             <Route exact path ="/signup" component = {SignUp}/>
-           { //<Route exact path = "/login" component = {Login}/>
-            }   
+            <Route exact path = "/login" component = {Login}/>
             <Route exact path="/tasks" component = {TaskList}/>
             <Route exact path="/exampleNotif" component = {Example}/>
           </Switch>

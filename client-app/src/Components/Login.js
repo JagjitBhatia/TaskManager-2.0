@@ -9,7 +9,7 @@ import {NotificationManager} from 'react-notifications';
 import TaskList from './TaskList';
 import {Redirect, BrowserRouter as Link } from 'react-router-dom';
 
-class SignUp extends Component {
+class Login extends Component {
     state = {username: "", password: "", id: -1, redirect: false};
 
     constructor(props) {
@@ -29,14 +29,14 @@ class SignUp extends Component {
         this.setState({password: event.target.value});
     }
     handleSubmit(event) {
-       axios.post('http://localhost:8090/createUser', {
+       axios.post('http://localhost:8090/checkUser', {
            params: {
                username: this.state.username,
                password: this.state.password
            }
         }).then(response => {
             console.log("RESPONSE: ", response);
-            NotificationManager.success('Your account has been created', 'Sign Up Successful!');
+            NotificationManager.success('Log In Successful', 'Welcome Back!');
             this.setState({redirect: true, id: response.data.id});
         }).catch(error => {
             console.log(error.response);
@@ -46,7 +46,7 @@ class SignUp extends Component {
             }
 
             else {
-                NotificationManager.error(error.response.data.message, 'Sign Up Error');
+                NotificationManager.error(error.response.data.message, 'Log In Error');
             }
         });
         event.preventDefault();
@@ -86,4 +86,4 @@ class SignUp extends Component {
     }
 }
 
-export default SignUp;
+export default Login;

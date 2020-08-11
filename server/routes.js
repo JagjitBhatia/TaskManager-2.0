@@ -56,16 +56,28 @@ app.get('/getAllTasks', function (req, res) {
 // TODO: Create REST API routes for Users 
 
 app.post('/createUser', function (req, res) {
-	console.log(req);
-	console.log('request received: ', req.body);
 	taskManager.createUser(req.body.params, function(results) {
-		console.log("READY TO SEND: ", results);
+		if(!results) {
+			res.status(400).send({message: "Username already exists"});
+			return;
+		}
+		
 		res.status(200).send(results);
 	});
 });
 
+app.post('/checkUser', function (req, res) {
+	taskManager.checkUser(req.body.params, function(results) {
+		if(!results) {
+			res.status(401).send({message: "Invalid Credentials!"});
+			return;
+		}
+
+		res.status(200).send(results);
+	})
+});
+
 app.get('/getTasksForUser', function (req, res) {
-	console.log(req);
 	taskManager.getTasksforUser(req.query.id, function(results) {
 		res.status(200).send(results);
 	});
