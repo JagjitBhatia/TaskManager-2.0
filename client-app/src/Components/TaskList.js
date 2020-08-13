@@ -4,6 +4,7 @@ import {Row, Col, Navbar} from 'react-bootstrap'
 import '../App.css';
 import Task from '../Task/Task';
 import axios from 'axios';
+import {withRouter} from 'react-router-dom'
 
 
 class TaskList extends Component {
@@ -12,9 +13,9 @@ class TaskList extends Component {
       }
 
 
-      setUser(id) {
-        console.log("I was called");
-        id = 1;
+      setUser = (id) => {
+        
+        this.setState({user_id: id});
         axios.get(`http://localhost:8090/getTasksForUser?id=${id}`).then(response => {
           this.setState({
             tasks: response.data
@@ -29,9 +30,19 @@ class TaskList extends Component {
           tasks: taskList
         });
       }
-    
+      
       componentDidMount() {
-        const id = this.props.location.state.id;
+        let id;
+        if(!this.state.id){
+          if(!this.props.location.state) return;
+          id = this.props.location.state.id;
+          this.setState({user_id: id});
+        }
+
+        else {
+          id = this.state.id;
+        }
+        
         console.log("ID: ", id);
         if(id) {
           axios.get(`http://localhost:8090/getTasksForUser?id=${id}`).then(response => {
@@ -45,6 +56,7 @@ class TaskList extends Component {
         }
       
         this.removeFromList = this.removeFromList.bind(this);
+        this.setUser = this.setUser.bind(this);
       }
 
     render() {
@@ -67,7 +79,7 @@ class TaskList extends Component {
                  </Col>
        
                <Col xs={12} md={8}>
-                   <Task name = {task.name} description = {task.description} time = {task.time} id = {task.id} removeFromList = {this.removeFromList}/>
+                   <Task name = {task.name} description = {task.description} time = {task.time} id = {task.id} removeFromList = {this.removeFromList} callbackFromParent = {this.setUser}/>
                </Col>
                <Col xs={3} md={2}>
            
@@ -99,4 +111,4 @@ class TaskList extends Component {
     }
 }
 
-export default TaskList;
+export default withRouter(TaskList);
