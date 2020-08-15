@@ -36,7 +36,12 @@ app.post('/createTask', function (req, res) {
 
 app.put('/updateTask', function (req, res) {
 	taskManager.updateTask(req.body.params, function(results) {
-		res.send(results);
+		if(!results) {
+			res.status(401).send({message: "Task does not exist!"});
+			return;
+		}
+
+		res.status(200).send(results);
 	});
 });
 

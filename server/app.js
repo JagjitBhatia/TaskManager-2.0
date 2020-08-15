@@ -116,12 +116,12 @@ exports.updateTask = function (updatedTask, response) {
 	let name = updatedTask.name;
 	let description = updatedTask.description;
 	let time = updatedTask.time;
-	let completed = updatedTask.completed;
+	//let completed = updatedTask.completed;
 
-	db.query(`UPDATE Tasks SET name = "${name}", description = "${description}, time = "${time}, completed = ${completed} WHERE id = ${id}`, function(err, res) {
+	db.query(`UPDATE Tasks SET name = "${name}", description = "${description}", time = "${time}" WHERE id = ${id}`, function(err, res) {
 		if(err) {
 			console.log("error: ", err);
-			return respons(err);
+			return response(err);
 		}
 
 		else {
@@ -161,13 +161,14 @@ exports.getAllTasks = function (response) {
 };
 
 exports.getTasksforUser = function(id, response) {
-	db.query(`SELECT * FROM Tasks JOIN Users ON Tasks.user_id = Users.id WHERE Users.id AND Users.id = ${id}`, function(err, res) {
+	db.query(`SELECT Tasks.id, Tasks.name, Tasks.description, Tasks.time FROM Tasks JOIN Users ON Tasks.user_id = Users.id WHERE Users.id AND Users.id = ${id}`, function(err, res) {
 		if(err) {
 			console.log("error: ", err);
 			return response(err);
 		}
 
 		else {
+			console.log(res);
 			return response(res);
 		}
 	})

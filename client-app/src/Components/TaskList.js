@@ -20,6 +20,7 @@ class TaskList extends Component {
           this.setState({
             tasks: response.data
           });
+          console.log("FETCHED NEW: ", this.state.tasks);
         });
       }
     
@@ -31,6 +32,10 @@ class TaskList extends Component {
         });
       }
       
+      refreshTaskList() {
+        this.componentDidMount();
+      }
+
       componentDidMount() {
         let id;
         if(!this.state.id){
@@ -40,7 +45,7 @@ class TaskList extends Component {
         }
 
         else {
-          id = this.state.id;
+          id = this.state.user_id;
         }
         
         console.log("ID: ", id);
@@ -57,6 +62,7 @@ class TaskList extends Component {
       
         this.removeFromList = this.removeFromList.bind(this);
         this.setUser = this.setUser.bind(this);
+        this.refreshTaskList = this.refreshTaskList.bind(this);
       }
 
     render() {
@@ -70,7 +76,7 @@ class TaskList extends Component {
           );
             if(this.state.tasks.length !== 0) {
              let taskList = [];
-       
+             console.log(this.state.tasks);
              this.state.tasks.forEach((task) => {
                taskList.push(
                  <Row>
@@ -79,7 +85,7 @@ class TaskList extends Component {
                  </Col>
        
                <Col xs={12} md={8}>
-                   <Task name = {task.name} description = {task.description} time = {task.time} id = {task.id} removeFromList = {this.removeFromList} callbackFromParent = {this.setUser}/>
+                   <Task name = {task.name} description = {task.description} time = {task.time} id = {task.id} removeFromList = {this.removeFromList} callbackFromParent = {this.refreshTaskList} user_id = {this.state.user_id}/>
                </Col>
                <Col xs={3} md={2}>
            
