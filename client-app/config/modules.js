@@ -21,6 +21,10 @@ module.exports = {
                     loader: "image-webpack-loader"
                 }
             ]
+        },
+        {
+            test: /\.(ttf|eot|svg|woff(2)?)(\S+)?$/,
+            loader: 'file-loader?publicPath=/&name=fonts/[name].[ext]'
         }
     ]
 }

@@ -4,13 +4,25 @@ import {Row, Col, Navbar} from 'react-bootstrap'
 import '../App.css';
 import Task from '../Task/Task';
 import axios from 'axios';
+import {withRouter} from 'react-router-dom'
+
 
 class TaskList extends Component {
     state = {
         tasks: []
       }
-    
-    
+
+
+      setUser = (id) => {
+        
+        this.setState({user_id: id});
+        axios.get(`http://localhost:8090/getTasksForUser?id=${id}`).then(response => {
+          this.setState({
+            tasks: response.data
+          });
+          console.log("FETCHED NEW: ", this.state.tasks);
+        });
+      }
     
       removeFromList(taskToDelete) {
         let taskList = this.state.tasks;
@@ -19,32 +31,52 @@ class TaskList extends Component {
           tasks: taskList
         });
       }
-    
+      
+      refreshTaskList() {
+        this.componentDidMount();
+      }
+
       componentDidMount() {
-        axios.get('http://localhost:8090/getAllTasks').then(response => {
-          console.log("RESPONSE: ", response.data);
-          this.setState({
-            tasks: response.data
-          });
-        }).catch(error => {
-            console.log(error);
-        });
-    
+        let id;
+        if(!this.state.id){
+          if(!this.props.location.state) return;
+          id = this.props.location.state.id;
+          this.setState({user_id: id});
+        }
+
+        else {
+          id = this.state.user_id;
+        }
+        
+        console.log("ID: ", id);
+        if(id) {
+          axios.get(`http://localhost:8090/getTasksForUser?id=${id}`).then(response => {
+            console.log("RESPONSE: ", response.data);
+            this.setState({
+              tasks: response.data
+            });
+          }).catch(error => {
+              console.log(error);
+          });  
+        }
+      
         this.removeFromList = this.removeFromList.bind(this);
+        this.setUser = this.setUser.bind(this);
+        this.refreshTaskList = this.refreshTaskList.bind(this);
       }
 
     render() {
         const base = (
             <Container style = {{marginBottom: '4rem'}}>
                <Navbar bg = "light" className = "justify-content-md-center" fixed="top" style = {{textAlign: 'center'}}>
-                <Navbar.Brand href="#" style = {{textAlign: 'center'}}><h1>Task Manager</h1></Navbar.Brand>
+                <Navbar.Brand href="/" style = {{textAlign: 'center'}}><h1>Task Manager</h1></Navbar.Brand>
               </Navbar>
             </Container>
             
           );
             if(this.state.tasks.length !== 0) {
              let taskList = [];
-       
+             console.log(this.state.tasks);
              this.state.tasks.forEach((task) => {
                taskList.push(
                  <Row>
@@ -53,7 +85,7 @@ class TaskList extends Component {
                  </Col>
        
                <Col xs={12} md={8}>
-                   <Task name = {task.name} description = {task.description} time = {task.time} id = {task.id} removeFromList = {this.removeFromList}/>
+                   <Task name = {task.name} description = {task.description} time = {task.time} id = {task.id} removeFromList = {this.removeFromList} callbackFromParent = {this.refreshTaskList} user_id = {this.state.user_id}/>
                </Col>
                <Col xs={3} md={2}>
            
@@ -85,4 +117,4 @@ class TaskList extends Component {
     }
 }
 
-export default TaskList;
+export default withRouter(TaskList);

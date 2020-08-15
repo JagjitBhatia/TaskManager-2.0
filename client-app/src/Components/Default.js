@@ -43,7 +43,7 @@ class Default extends Component {
         }
 
         else if(redirect == "login") {
-            return <Redirect to='/tasks'/>;
+            return <Redirect to='/login'/>;
         }
         
     }
