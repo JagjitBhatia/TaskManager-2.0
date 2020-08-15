@@ -7,7 +7,8 @@ This first release will be an end-to-end web application that supports a single 
 **Current Status:**  
 Finished "Edit Task" feature. Now working on UI for "Create Task".
 
-**Build Instructions**
+**Build Instructions:** 
+
 The following instructions assume MySQL is installed.
 
 Database Setup:
