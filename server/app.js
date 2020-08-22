@@ -94,12 +94,13 @@ exports.getUser = function (userID, response) {
 
 
 exports.createTask = function (newTask, response) {
+	let id = newTask.id;
 	let name = newTask.name;
 	let description = newTask.description;
 	let time = newTask.time;
 	let completed = 0;
 	
-	db.query(`INSERT INTO Tasks (user_id, name, description, time) VALUES (1, "${name}", "${description}", "${time}")`, function(err, res) {
+	db.query(`INSERT INTO Tasks (user_id, name, description, time) VALUES (${id}, "${name}", "${description}", "${time}")`, function(err, res) {
 		if(err) {
 			console.log("error: ", err);
 			return response(err);

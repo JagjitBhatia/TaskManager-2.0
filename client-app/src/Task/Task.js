@@ -190,7 +190,6 @@ class Task extends Component {
 
 	handleSubmit(event) {
 		event.preventDefault();
-		//this.getUserID();
 		let newTime = this.state.time;
 		newTime.hours = get12Hour(this.state.time.hours);
 		const {datetime, error} = convertToSqlDatetime(this.state.time, this.state.AM);
@@ -213,6 +212,7 @@ class Task extends Component {
 			console.log(error);
 		});
 
+		this.setState({prevName: this.state.name, prevDesc: this.state.description});
 		this.setState({refresh: true});
 		this.closeEdit();
 		this.date.setFullYear(this.state.time.year);
@@ -335,3 +335,5 @@ class Task extends Component {
 }
 
 export default withRouter(Task);
+export {convertToSqlDatetime, formatNumber, formatYear, get12Hour};
+
