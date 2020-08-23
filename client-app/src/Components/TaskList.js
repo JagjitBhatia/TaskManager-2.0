@@ -11,7 +11,8 @@ import '../App.css';
 import Task, {convertToSqlDatetime, formatNumber, formatYear, get12Hour} from '../Task/Task';
 import axios from 'axios';
 import {NotificationManager} from 'react-notifications';
-import {withRouter} from 'react-router-dom'
+import {withRouter} from 'react-router-dom';
+import socketIOClient from 'socket.io-client';
 
 
 class TaskList extends Component {
@@ -37,7 +38,8 @@ class TaskList extends Component {
 		    this.updateDay = this.updateDay.bind(this);
 		    this.updateYear = this.updateYear.bind(this);
 		    this.updateHours = this.updateHours.bind(this);
-		    this.updateMinutes = this.updateMinutes.bind(this);
+        this.updateMinutes = this.updateMinutes.bind(this);
+        this.handleSockNotif = this.handleSockNotif.bind(this);
       }
 
 
@@ -46,8 +48,13 @@ class TaskList extends Component {
           return this.state.refresh;
       }
 
+      handleSockNotif(message) {
+        message.forEach((task) => {NotificationManager.warning(`It's time for task "${task.name}"!`,'Task Alert', 5000);})
+        this.state.notifServer.emit('tasksReceived', {});
+      }
+      
       setUser = (id) => {
-        if(this.state.refresh) {
+        console.log("I was called");
           this.setState({user_id: id});
         axios.get(`http://localhost:8090/getTasksForUser?id=${id}`).then(response => {
           this.setState({
@@ -55,7 +62,6 @@ class TaskList extends Component {
           });
           console.log("FETCHED NEW: ", this.state.tasks);
         });
-        }
         
       }
     
@@ -65,6 +71,8 @@ class TaskList extends Component {
         this.setState({
           tasks: taskList
         });
+
+        this.refreshTaskList();
       }
       
       refreshTaskList() {
@@ -72,10 +80,9 @@ class TaskList extends Component {
       }
 
       componentDidMount() {
-        
         if(this.state.refresh) {
           let id;
-        if(!this.state.id){
+        if(!this.state.user_id){
           if(!this.props.location.state) return;
           id = this.props.location.state.id;
           this.setState({user_id: id});
@@ -95,6 +102,12 @@ class TaskList extends Component {
           }).catch(error => {
               console.log(error);
           });  
+
+          console.log("attempting connection");
+          const socket = socketIOClient('http://localhost:8020/');
+          this.setState({notifServer: socket});
+          socket.on('id_request', () => {socket.emit('subscribed', this.state.user_id)});
+          socket.on('taskNotif', this.handleSockNotif);
         }
         }
         
@@ -183,10 +196,13 @@ class TaskList extends Component {
 		    this.setState({prevName: this.state.name, prevDesc: this.state.description});
         this.setState({refresh: true});
         this.closeAdd();
-        this.setUser(this.state.user_id);
+        this.forceUpdate();
       }
 
     render() {
+
+      const stateTasks = this.state.tasks;
+
         const base = (
             <Container style = {{marginBottom: '2rem'}}>
                <Navbar bg = "light" className = "justify-content-md-center" fixed="top" style = {{textAlign: 'center'}}>
@@ -241,10 +257,10 @@ class TaskList extends Component {
     			</Modal>
           );
 
-            if(this.state.tasks.length !== 0) {
+            if(stateTasks !== 0) {
              let taskList = [];
-             console.log(this.state.tasks);
-             this.state.tasks.forEach((task) => {
+             console.log(stateTasks);
+             stateTasks.forEach((task) => {
                taskList.push(
                  <Row>
                      <Col xs={3} md={2}>

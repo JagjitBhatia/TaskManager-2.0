@@ -10,13 +10,19 @@ const PORT = process.env.PORT || 8090;
 let notified = [];
 
 
+
 io.on('connection', function (client) {
-	setInterval(() => {
-		notify.notifyClient(router.taskManager, client, notified);
-	}, 3000);
+	console.log("CONNECTION!!!!!");
+	client.emit('id_request', {});
+	client.on('subscribed', (id) => {
+		setInterval(() => {
+			notify.notifyClient(id, router.task_manager, client, notified);
+		}, 5000);
+	});
 });
 
-router.listen(PORT);
+
+router.app.listen(PORT);
 
 io.listen(8020);
 

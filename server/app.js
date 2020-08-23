@@ -40,7 +40,6 @@ exports.createUser = function (newUser, response) {
 						id: createdUser.id,
 						username: createdUser.username
 					}
-					console.log("Sending response to user: ", data);
 					return response(data);
 				});
 			}
@@ -169,7 +168,6 @@ exports.getTasksforUser = function(id, response) {
 		}
 
 		else {
-			console.log(res);
 			return response(res);
 		}
 	})
