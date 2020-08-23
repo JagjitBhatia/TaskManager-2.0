@@ -231,13 +231,13 @@ class Task extends Component {
 	getTaskName() {
 		if(this.state.refresh) return this.state.name;
 		
-		return this.state.prevName;
+		return this.props.name;
 	}
 
 	getTaskDescription() {
 		if(this.state.refresh) return this.state.description;
 
-		return this.state.prevDesc;
+		return this.props.description;
 	}
 
 	updateAM(event) {
@@ -276,7 +276,7 @@ class Task extends Component {
 					<Card.Header style = {{textAlign: "left"}}>	
 						Task ID: {this.props.id}
 						<ButtonToolbar style = {{float: "right"}}>
-							<Button variant = "danger" className = "fas fa-trash-alt" style = {{margin: '0.25rem'}} onClick = {() => deleteTask(this.props.id, this.props.removeFromList)}/>
+							<Button variant = "danger" className = "fas fa-trash-alt" style = {{margin: '0.25rem'}} onClick = {() => deleteTask(this.props.id, this.props.callbackFromParent)}/>
 							<Button variant = "primary" className = "fas fa-edit" style = {{margin: '0.25rem'}} onClick = {() => this.editTask()}/>
 							<Button variant = "success" className= "fas fa-check-square" style = {{margin: '0.25rem'}}/>
 						</ButtonToolbar>

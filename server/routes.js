@@ -88,7 +88,6 @@ app.get('/getTasksForUser', function (req, res) {
 	});
 });
 
-exports.taskManager = taskManager;
 
 module.exports = (cli_args) => {
 	const sql_params = {
@@ -99,5 +98,5 @@ module.exports = (cli_args) => {
 	};
 
 	taskManager.init(sql_params);
-	return app;
+	return {app: app, task_manager: taskManager};
 }
