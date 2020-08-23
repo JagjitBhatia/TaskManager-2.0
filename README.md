@@ -5,7 +5,7 @@ An advanced version of the PTMS task manager; The completed project will consist
 This first release will be an end-to-end web application that supports a single user. The release will consist of a React web client application, a Node + Express REST API with real-time notifications via Socket.IO, a SQL query for building the TaskManagerDB in MySQL, and scripts/instructions for running the web app.
 
 **Current Status:**  
-Finished "Edit Task" feature. Now working on UI for "Create Task".
+Version 1.0 Complete!!
 
 **Build Instructions:** 
 
